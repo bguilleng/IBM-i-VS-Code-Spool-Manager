@@ -1,0 +1,123 @@
+{
+  "name": "ibmi-spool-manager",
+  "displayName": "IBM i Spool Manager",
+  "version": "0.3.7",
+  "publisher": "local-ibmi-tools",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./dist/src/extension.js",
+  "extensionDependencies": [
+    "halcyontechltd.code-for-ibmi"
+  ],
+  "activationEvents": [
+    "onView:ibmiSpool.files",
+    "onCommand:spool.refresh"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ibmiSpool",
+          "title": "IBM i Spools",
+          "icon": "resources/printer.svg"
+        }
+      ]
+    },
+    "views": {
+      "ibmiSpool": [
+        {
+          "id": "ibmiSpool.files",
+          "name": "My spools"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "spool.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "spool.open",
+        "title": "Open spool"
+      },
+      {
+        "command": "spool.remove",
+        "title": "Delete spool"
+      },
+      {
+        "command": "spool.export",
+        "title": "Export to IFS"
+      },
+      {
+        "command": "spool.download",
+        "title": "Download spool locally (TXT/PDF)"
+      },
+      {
+        "command": "spool.downloadPages",
+        "title": "Download selected pages (TXT/PDF)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "spool.refresh",
+          "when": "view == ibmiSpool.files",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "spool.open",
+          "when": "viewItem == spool"
+        },
+        {
+          "command": "spool.export",
+          "when": "viewItem == spool"
+        },
+        {
+          "command": "spool.remove",
+          "when": "viewItem == spool"
+        },
+        {
+          "command": "spool.download",
+          "when": "viewItem == spool"
+        },
+        {
+          "command": "spool.downloadPages",
+          "when": "viewItem == spool"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "IBM i Spool Manager",
+      "properties": {
+        "ibmiSpool.sourceCcsid": {
+          "type": "number",
+          "enum": [
+            37,
+            284,
+            1208
+          ],
+          "default": 37,
+          "description": "CCSID of text extracted by CPYSPLF with WSCST(*NONE). Set to the actual source encoding (37/284/1208)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/test/*.test.js",
+    "package": "npm run build && vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
+}
