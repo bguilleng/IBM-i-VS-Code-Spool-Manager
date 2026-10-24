@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const node_test_1 = require("node:test");
+const node_assert_1 = require("node:assert");
+const selection_1 = require("../src/selection");
+const spool = { name: 'QPJOBLOG', number: 1, job: '633616/GGUILLEN/IARSCOPE', user: 'GGUILLEN', status: 'READY', pages: 75, created: '' };
+(0, node_test_1.test)('double click argument is Spool', () => node_assert_1.strict.equal((0, selection_1.resolveSpool)(spool), spool));
+(0, node_test_1.test)('context menu argument is TreeItem', () => node_assert_1.strict.equal((0, selection_1.resolveSpool)({ spool, label: 'QPJOBLOG #1' }), spool));
+(0, node_test_1.test)('reject missing argument', () => node_assert_1.strict.throws(() => (0, selection_1.resolveSpool)(undefined), /No spool selected/));
+(0, node_test_1.test)('reject invalid wrapped spool', () => node_assert_1.strict.throws(() => (0, selection_1.resolveSpool)({ spool: { number: 1 } }), /missing name/));
